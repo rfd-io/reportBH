@@ -1,8 +1,6 @@
-from pandas.core.algorithms import duplicated
 import streamlit as st
 import pandas as pd
 import numpy as np
-from SessionState import get
 from dashboard import get_data, content
 
 def is_authenticated(user, password):
