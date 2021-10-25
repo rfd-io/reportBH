@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from SessionState import get
-from login import login, dashboard
+from login import get_data, planning
 
 
 import streamlit as st
@@ -38,7 +38,8 @@ def login(blocks):
 
 def main():
     st.write("Laporan Kegiatan Dashboard Monev")
-    dashboard()
+    df = get_data()
+    planning(df)
 
 
 login_blocks = generate_login_block()

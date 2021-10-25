@@ -2,7 +2,6 @@ import streamlit as st
 import sqlite3 
 import hashlib
 import pandas as pd
-from multipage import MultiPage
 
 # Security
 #passlib,hashlib,bcrypt,scrypt
@@ -49,7 +48,6 @@ def clean_blocks(blocks):
 		block.empty()
 
 def login():
-
 	menu = ["Login", "Dashboard"]
 	choice = st.sidebar.selectbox("Menu",menu)
 
@@ -67,7 +65,6 @@ def login():
 			st.warning("Incorrect Username/Password")
 	elif choice == "Dashboard":
 		st.write("Laporan Kegiatan Dashboard Monev")
-		dashboard()
 
 	
 def get_data():
