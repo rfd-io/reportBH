@@ -1,15 +1,12 @@
+from pandas.core.algorithms import duplicated
 import streamlit as st
 import pandas as pd
 import numpy as np
 from SessionState import get
-from login import get_data, planning
-
-
-import streamlit as st
-
+from dashboard import get_data, content
 
 def is_authenticated(user, password):
-    return user == "user" and password == "admin"
+    return user == "admin" and password == "admin"
 
 
 def generate_login_block():
@@ -25,28 +22,31 @@ def clean_blocks(blocks):
 
 
 def login(blocks):
-    # blocks[0].markdown("""
-    #         <style>
-    #             input {
-    #                 -webkit-text-security: disc;
-    #             }
-    #         </style>
-    #     """, unsafe_allow_html=True)
-
     return blocks[0].text_input('Username'), blocks[1].text_input('Password',type='password')
 
 
 def main():
-    st.write("Laporan Kegiatan Dashboard Monev")
-    df = get_data()
-    planning(df)
-
+    df = get_data("form")
+    result = content(df)
+    st.title("Laporan Kegiatan Dashboard Monev")
+    st.write("Pelapor:", result[0])
+    st.write("Kelas Pelapor:", result[1])
+    st.write("Tanggal Lapor:", result[7])
+    st.subheader("PLANNING")
+    st.markdown(result[2])
+    st.subheader("DOING")
+    st.markdown(result[3])
+    st.subheader("CHECKING")
+    st.markdown(result[4])
+    st.subheader("ACTUATING-FOLLOW UP")
+    st.markdown(result[5])
+    st.subheader("ACTUATING-HASIL")
+    st.markdown(result[6])
 
 login_blocks = generate_login_block()
 user, password = login(login_blocks)
 
 if is_authenticated(user, password):
-    st.write("Login as User from IT Department")
     clean_blocks(login_blocks)
     main()
 elif password:
