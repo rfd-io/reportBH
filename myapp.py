@@ -1,21 +1,55 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from gsheetsdb import connect
+from SessionState import get
+from login import login, dashboard
 
-# Create a connection object.
-conn = connect()
 
-# Perform SQL query on the Google Sheet.
-# Uses st.cache to only rerun when the query changes or after 10 min.
-@st.cache(ttl=600)
-def run_query(query):
-    rows = conn.execute(query, headers=1)
-    return rows
+import streamlit as st
 
-sheet_url = st.secrets["public_gsheets_url"]
-rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
-# Print results.
-for row in rows:
-    st.write(f"{row.name} has a :{row.pet}:")
+def is_authenticated(user, password):
+    return user == "user" and password == "admin"
+
+
+def generate_login_block():
+    block1 = st.empty()
+    block2 = st.empty()
+
+    return block1, block2
+
+
+def clean_blocks(blocks):
+    for block in blocks:
+        block.empty()
+
+
+def login(blocks):
+    # blocks[0].markdown("""
+    #         <style>
+    #             input {
+    #                 -webkit-text-security: disc;
+    #             }
+    #         </style>
+    #     """, unsafe_allow_html=True)
+
+    return blocks[0].text_input('Username'), blocks[1].text_input('Password',type='password')
+
+
+def main():
+    st.write("Laporan Kegiatan Dashboard Monev")
+    dashboard()
+
+
+login_blocks = generate_login_block()
+user, password = login(login_blocks)
+
+if is_authenticated(user, password):
+    st.write("Login as User from IT Department")
+    clean_blocks(login_blocks)
+    main()
+elif password:
+    st.info("Incorrect username/password")
+    
+
+
