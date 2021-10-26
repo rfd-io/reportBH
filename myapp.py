@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from dashboard import get_data, content
+from PIL import Image
+from dashboard import get_data, content, process_imgurl
 
 def is_authenticated(user, password):
     return user == "admin" and password == "admin"
-
 
 def generate_login_block():
     block1 = st.empty()
@@ -13,16 +13,14 @@ def generate_login_block():
 
     return block1, block2
 
-
 def clean_blocks(blocks):
     for block in blocks:
         block.empty()
 
-
 def login(blocks):
     return blocks[0].text_input('Username'), blocks[1].text_input('Password',type='password')
 
-
+# @st.cache(suppress_st_warning=True)
 def main():
     df = get_data("form")
     result = content(df)
@@ -30,6 +28,8 @@ def main():
     st.write("Pelapor:", result[0])
     st.write("Kelas Pelapor:", result[1])
     st.write("Tanggal Lapor:", result[7])
+    st.subheader("PHOTO")
+    st.image(process_imgurl(result[8]), width = 500)
     st.subheader("PLANNING")
     st.markdown(result[2])
     st.subheader("DOING")
@@ -40,6 +40,7 @@ def main():
     st.markdown(result[5])
     st.subheader("ACTUATING-HASIL")
     st.markdown(result[6])
+
 
 login_blocks = generate_login_block()
 user, password = login(login_blocks)

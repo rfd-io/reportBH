@@ -33,6 +33,11 @@ def content(df):
 	follow_up = df.loc[idx,'ACTUATING-FOLLOW UP']
 	hasil = df.loc[idx,'ACTUATING-HASIL']
 	date = df.loc[idx,'Timestamp'].date()
+	image_url = df.loc[idx,'PHOTO']
 
-	return users_choice, kelas_choice, planning, doing, checking, follow_up, hasil, date
+	return users_choice, kelas_choice, planning, doing, checking, follow_up, hasil, date, image_url
 
+def process_imgurl(image_url):
+	img_df = pd.DataFrame(image_url.split(', '), columns=["url"])
+	img_lst = img_df['url'].str.split("=|,", expand=True)[1].tolist()
+	return [f"https://drive.google.com/u/0/uc?id={img_lst[i]}&export=download" for i in range(0, len(img_lst))]
