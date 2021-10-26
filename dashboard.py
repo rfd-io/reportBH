@@ -17,7 +17,7 @@ def get_data(sheets):
 
 def content(df):
 	st.sidebar.text('Logging in as admin')
-	st.sidebar.text('Department: IT')
+	st.sidebar.text('Unit: IT')
 
 	users = df['USER'].drop_duplicates()
 	users_choice = st.sidebar.selectbox("Pilih Pelapor:",users)
